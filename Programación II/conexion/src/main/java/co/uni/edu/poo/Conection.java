@@ -10,8 +10,9 @@ public class Conection {
     private boolean ssl;
     private short port;
     private String dataBase;
-    
-    public Conection(String user, String pass, String host, String codification, short await, byte attempts,
+    private static Conection instance;
+
+    private Conection(String user, String pass, String host, String codification, short await, byte attempts,
             boolean ssl, short port, String dataBase) {
         this.user = user;
         this.pass = pass;
@@ -24,12 +25,10 @@ public class Conection {
         this.dataBase = dataBase;
     }
 
-    private static Conection instance;
-
-    private Conection(){
+    private Conection() {
     }
 
-    public static Conection getConection(){
+    public static Conection getInstance() {
         if (Conection.instance == null) {
             Conection.instance = new Conection();
         }
@@ -118,8 +117,16 @@ public class Conection {
         private boolean ssl;
         private short port;
         private String dataBase;
+        private static ConectionBuilder instance;
 
-        public ConectionBuilder(String user, String pass, String host) {
+        private ConectionBuilder() {
+        }
+
+        public static ConectionBuilder getInstance(){
+            if (ConectionBuilder.instance == null) {
+                ConectionBuilder.instance = new ConectionBuilder();
+            }
+            return ConectionBuilder.instance;
         }
 
         public ConectionBuilder user(String user) {
@@ -168,7 +175,12 @@ public class Conection {
         }
 
         public Conection build() {
-            return new Conection(user, pass, host, codification, await, attempts, ssl, port, dataBase);       
+            if (user == null || pass == null || host == null){
+                System.out.println("Debe de llenar como mínimo los siguientes 3 campos:" + "\nUser " +
+                "\nPass " + "\nHost");
+                return null;
+            }
+            return new Conection(user, pass, host, codification, await, attempts, ssl, port, dataBase);    
         }
     }
 }
