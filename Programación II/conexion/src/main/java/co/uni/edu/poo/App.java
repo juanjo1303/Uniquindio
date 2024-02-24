@@ -36,5 +36,3 @@ public class App {
         conexion.getDataBase() +"\n");
     }
 }
-
-//   .host("192.168.123.103")     + "\nSu IP es: " + conexion.getHost()
